@@ -14,8 +14,8 @@ import torch
 class A2D2ERPOnlineDataset(BaseDataset):
     min_depth = 0.01
     max_depth = 100
-    test_split = "a2d2_val.json"
-    train_split = "a2d2_train.json"
+    test_split = ""
+    train_split = "a2d2_train.txt"
 
     def __init__(
         self,
