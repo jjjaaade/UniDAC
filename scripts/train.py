@@ -36,7 +36,6 @@ from unidac.utils import (DICT_METRICS_DEPTH,
 from unidac.optimization.scheduler import CosineScheduler
 from unidac.utils.ema_torch import (DummyExponentialMovingAverage,
                                       ExponentialMovingAverage)
-
 EMA_INTERVAL = 10
 
 def main_worker(gpu, config: Dict[str, Any], args: argparse.Namespace, ngpus_per_node, run_id: str):
@@ -175,7 +174,7 @@ def main_worker(gpu, config: Dict[str, Any], args: argparse.Namespace, ngpus_per
     if args.checkpoint_pretrained is not None:
         print(f'    -> Loading pretrained checkpoint from: {args.checkpoint_pretrained}')
         model.load_pretrained(args.checkpoint_pretrained)
-    erp_mode = True if "ERP" in args.model_name else False
+    erp_mode = True # if "ERP" in args.model_name else False
     if args.distributed:
         model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
         model = DistributedDataParallel(
@@ -317,7 +316,6 @@ def main_worker(gpu, config: Dict[str, Any], args: argparse.Namespace, ngpus_per
                             sum([v for k, v in losses["opt"].items()])
                             / nsteps_accumulation_gradient
                         )
-
             # Average the loss across all ratios
             loss = loss / len(multi_reso_ratios)
 
