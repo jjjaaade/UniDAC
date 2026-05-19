@@ -84,11 +84,14 @@ The dataset is soft-linked to `datasets/nuscenes`, and splits are saved [here](.
 Download the dataset from [here](https://www.argoverse.org/av2.html#download-link) which includes camera, LiDAR, and calibration data.
 Refer to their official github repository, [av2-api](https://github.com/argoverse/av2-api/blob/b7321d1f71f6ce0ecdd151f4f2b648338c191edd/src/av2/datasets/sensor/av2_sensor_dataloader.py#L415), to generate the depth maps.
 Ensure the generated depthmaps follow the file structure as mentioned above.
-The dataset should be soft-linked to `datasets` and the split files are provided [here](../splits/argoverse2/argoverse2_train.txt)
+
+The dataset should be soft-linked to `datasets`. We randomly select 500K samples and provide the corresponding split file [here](../splits/argoverse2/argoverse2_train.txt).
 
 ### A2D2
 Download the camera, LiDAR and calibration data from [here](https://www.a2d2.audi/en/download/) for all the scenes, namely, Gaimersheim, Ingolstadt, and Munich.
 
+The dataset should be soft-linked to `datasets`. We ignore the front-camera samples as mentioned in the paper and provide the generated split file
+[here](../splits/a2d2/a2d2_train.txt).
 <!-- The three major indoor datasets used for training are provided by [OmniData](https://github.com/EPFL-VILAB/omnidata/tree/main/omnidata_tools/dataset#readme). The package can be installed as follows:
 
 ```bash
