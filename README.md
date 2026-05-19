@@ -162,7 +162,7 @@ Different config files for evaluating the reported testing datasets are included
 | `<dataset>` | `scannetpp` |     `gv2`    |   `scannetpp`   | `kitti360` |  `kitti`  |   `nyu`  | `nuscenes` |  `ibims` |
 
 ## Training
-Download DINOv3 checkpoint from [here](https://github.com/facebookresearch/dinov3#pretrained-models) and place it in `./weights`.
+Download DINOv3(ViT-L16-LVD-1689M) checkpoint from [here](https://github.com/facebookresearch/dinov3#pretrained-models) and place it in `./weights`.
 
 Modify `CUDA_VISIBLE_DEVICES` in `train.sh` to reflect the available GPUs and run the following to train the UniDAC model. The best checkpoint would be stored in `./checkpoints`.
 
