@@ -84,6 +84,7 @@ The dataset is soft-linked to `datasets/nuscenes`, and splits are saved [here](.
 Download the dataset from [here](https://www.argoverse.org/av2.html#download-link) which includes camera, LiDAR, and calibration data.
 Refer to their official github repository, [av2-api](https://github.com/argoverse/av2-api/blob/b7321d1f71f6ce0ecdd151f4f2b648338c191edd/src/av2/datasets/sensor/av2_sensor_dataloader.py#L415), to generate the depth maps.
 Ensure the generated depthmaps follow the file structure as mentioned above.
+The dataset should be soft-linked to `datasets` and the split files are provided [here](../splits/argoverse2/argoverse2_train.txt)
 
 ### A2D2
 Download the camera, LiDAR and calibration data from [here](https://www.a2d2.audi/en/download/) for all the scenes, namely, Gaimersheim, Ingolstadt, and Munich.
