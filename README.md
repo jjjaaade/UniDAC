@@ -24,9 +24,9 @@
 
 
 
-- [ ] Demo code for images with unknown camera parameters.
-- [x] `2026-05-17`:Training code for UniDAC.
-- [x] `2026-04-12`:Demo code for easy setup and usage.
+- [x] `2026-05-27`: Demo code for images with unknown camera parameters.
+- [x] `2026-05-17`: Training code for UniDAC.
+- [x] `2026-04-12`: Demo code for easy setup and usage.
 - [x] `2026-03-13`: Release of UniDAC checkpoint trained on moderately sized datasets.
 - [x] `2026-03-13`: Testing and evaluation pipeline for zero-shot metric depth estimation on perspective, fisheye, and 360-degree datasets.
 - [x] `2026-03-13`: Data preparation and curation scripts.
@@ -144,7 +144,16 @@ You can then run the demo script by running the following command and the visual
 ```
 bash demo.sh
 ```
+### In-the-Wild Data
 
+We provide a demo script for predicting camera parameters for in-the-wild images and utilizing the predicted camera parameters for depth prediction in UniDAC.
+We utilize [AnyCalib](https://github.com/javrtg/AnyCalib), a state-of-the-art camera intrinsic estimation model, to predict camera parameters. 
+Follow the instructions in their [official repository](https://github.com/javrtg/AnyCalib) to install required libraries. 
+`demo/demo_unidac_wild.py` gives an example the model config and usage of the predicted camera parameters for ScanNet++ dataset.
+You can run the demo script by running the following command and the visualizations will be stored in `demo/output`:
+```
+bash demo.sh wild
+```
 ## Testing
 
 Download the checkpoint from <a href='https://huggingface.co/girish1511/UniDAC'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow'></a> and place in `checkpoints/`.

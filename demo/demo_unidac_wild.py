@@ -13,52 +13,10 @@ from unidac.models.unidac import UniDAC
 from unidac.utils.erp_geometry import erp_patch_to_cam_fast, cam_to_erp_patch_fast
 from unidac.utils.visualization import save_val_imgs_v2
 from unidac.dataloaders.dataset import resize_for_input
+import pdb
+from anycalib import AnyCalib
 
-OUTDOOR_SAMPLE_1 = {
-    "config_file": "configs/test/dac_dinov3l+dpt_outdoor_test_kitti360.json",
-    "dataset_name": "kitti360",
-    "image_filename": "demo/input/kitti360_rgb.png",
-    "annotation_filename_depth": "demo/input/kitti360_depth.png",
-    "depth_scale": 256.0,
-    "fishey_grid": "splits/kitti360/grid_fisheye_02.npy",
-    "crop_wFoV": 180, # degree decided by origianl data fov + some buffer
-    "fwd_sz": (704, 704), # the patch size input to the model
-    "erp": False,
-    "cam_params": {
-        'dataset':'kitti360',
-        "fx": 1.3363220825849971e+03,
-        "fy": 1.3357883350012958e+03,
-        "cx": 7.1694323510126321e+02,
-        "cy": 7.0576498308221585e+02,
-        "xi": 2.2134047507854890e+00,
-        "k1": 1.6798235660113681e-02,
-        "k2": 1.6548773243373522e+00,
-        "p1": 4.2223943394772046e-04,
-        "p2": 4.2462134260997584e-04,
-        # "w": 1400,
-        # "h": 1400,
-        "camera_model": "MEI",
-    }
-}
-
-INDOOR_SAMPLE_1 = {
-    "config_file": "configs/test/dac_dinov3l+dpt_indoor_test_m3d.json",
-    "dataset_name": "matterport3d",
-    "image_filename": "demo/input/matterport3d_rgb.png",
-    "annotation_filename_depth": "demo/input/matterport3d_depth.exr",
-    "depth_scale": 1.0,
-    "fishey_grid": None,
-    "fwd_sz": (512, 1024), # the patch size input to the model
-    "erp": True,
-    "cam_params": {
-        'dataset':'matterport3d',
-        # "w": 1024,
-        # "h": 512,
-        "camera_model": "ERP",
-    },
-}
-
-INDOOR_SAMPLE_2 = {
+INDOOR_SAMPLE = {
     "config_file": "configs/test/dac_dinov3l+dpt_indoor_test_scannetpp.json",
     "dataset_name": "scannetpp",
     "image_filename": "demo/input/scannetpp_rgb.jpg",
@@ -70,14 +28,14 @@ INDOOR_SAMPLE_2 = {
     "erp": False,
     "cam_params": {
         'dataset':'scannetpp',
-        "fl_x": 789.9080967683176,
-        "fl_y": 791.5566599926353,
-        "cx": 879.203786509326,
-        "cy": 584.7893145555763,
-        "k1": -0.029473047856246333,
-        "k2": -0.005769803970428537,
-        "k3": -0.002148236771485755,
-        "k4": 0.00014840568362061509,
+        "fl_x": None, #789.9080967683176,
+        "fl_y": None, #791.5566599926353,
+        "cx": None, #879.203786509326,
+        "cy": None, #584.7893145555763,
+        "k1": None, #-0.029473047856246333,
+        "k2": None, #-0.005769803970428537,
+        "k3": None, #-0.002148236771485755,
+        "k4": None, #0.00014840568362061509,
         # "w": 1752,
         # "h": 1168,
         "camera_model": "OPENCV_FISHEYE",
@@ -207,7 +165,7 @@ def demo_one_sample(model, device, sample, cano_sz, args: argparse.Namespace):
         preds[0],
         batch["gt"][0],
         batch["image"][0],
-        f'{dataset_name}_output.jpg',
+        f'{dataset_name}_output_intr.jpg',
         save_img_dir,
         active_mask=attn_mask,
         valid_depth_mask=batch["mask"][0],
@@ -215,17 +173,37 @@ def demo_one_sample(model, device, sample, cano_sz, args: argparse.Namespace):
         arel_max=vis_arel_max
     )
 
+def get_cam_params(cam_model, image_filename, device):
+    image = np.array(Image.open(image_filename).convert("RGB"))
+    image = torch.tensor(image, dtype=torch.float32, device=device).permute(2, 0, 1) / 255
+    output = cam_model.predict(image, cam_id="kb:4")
+    intrinsics = output['intrinsics']
+    return intrinsics
+
+
 def main(args: argparse.Namespace):
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = None
+    cam_model = AnyCalib(model_id="anycalib_dist").to(device)
 
-    samples = [OUTDOOR_SAMPLE_1, INDOOR_SAMPLE_1, INDOOR_SAMPLE_2]
+    samples = [INDOOR_SAMPLE]
     for i, sample in enumerate(samples):
         
         config_file = sample["config_file"]
         with open(config_file, "r") as f:
             config = json.load(f)
         
+        
+        print(f"Predicting camera parameters for sample {i}: {sample['dataset_name']}...")
+        pred_cam_params = get_cam_params(cam_model, image_filename=sample["image_filename"], device=device)
+        sample["cam_params"].update({'fl_x': pred_cam_params[0].item(),
+                                     'fl_y': pred_cam_params[1].item(),
+                                     'cx': pred_cam_params[2].item(),
+                                     'cy': pred_cam_params[3].item(),
+                                     'k1': pred_cam_params[4].item(),
+                                     'k2': pred_cam_params[5].item(),
+                                     'k3': pred_cam_params[6].item(),
+                                     'k4': pred_cam_params[7].item()})
         if model is None:
             model_name = 'UniDAC'
             model = eval(model_name).build(config)
@@ -236,10 +214,7 @@ def main(args: argparse.Namespace):
         print(f"Processing sample {i}: {sample['dataset_name']}...")
         cano_sz = config["data"]["cano_sz"]
         demo_one_sample(model, device, sample, cano_sz, args)
-
-    print('Demo completed!!')
-
-
+    print('Demo completed!!!')
 
 if __name__ == "__main__":
     # Arguments
