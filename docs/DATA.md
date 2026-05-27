@@ -92,67 +92,10 @@ Download the camera, LiDAR and calibration data from [here](https://www.a2d2.aud
 
 The dataset should be soft-linked to `datasets`. We ignore the front-camera samples as mentioned in the paper and provide the generated split file
 [here](../splits/a2d2/a2d2_train.txt).
-<!-- The three major indoor datasets used for training are provided by [OmniData](https://github.com/EPFL-VILAB/omnidata/tree/main/omnidata_tools/dataset#readme). The package can be installed as follows:
 
-```bash
-conda install -c conda-forge aria2
-pip install 'omnidata-tools'
+Run the following script to generate the depthmaps
+
 ```
-
-### **Habitat-Matterport**
-The Habitat-Matterport dataset can be downloaded by running:
-
-```bash
-omnitools.download point_info rgb depth_euclidean mask_valid --components hm3d --subset tiny --dest ./omnidata_hm3d --name your-name --email your-email --agree_all
+python splits/a2d2/gen_depthmap.py --data_dir ./datasets/a2d2
 ```
-
-We use the first 50 scenes to compose part of our indoor training data. Unfortunately, the full dataset (~8TB) must be downloaded before deleting the unused parts. After downloading, use the [script](splits/hm3d/prepare_hm3d_split_files_in_nyu_format.py) to generate split files.
-
-The dataset is soft-linked to `datasets/hm3d`, and splits are saved [here](../splits/hm3d).
-
-### **Taskonomy**
-Omnidata provides the tiny version of Taskonomy, which we use for part of our indoor training data. Download it with:
-
-```bash
-omnitools.download point_info rgb depth_euclidean mask_valid --components taskonomy --subset tiny --dest ./omnidata_taskonomy_tiny --name your-name --email your-email --agree_all
-```
-
-After downloading, use the [script](../splits/taskonomy/prepare_taskonomy_split_files_in_nyu_format.py) to generate split files.
-
-The dataset is soft-linked to `datasets/taskonomy`, and splits are saved [here](../splits/taskonomy).
-
-### **Hypersim**
-The full Hypersim dataset is used to compose part of our indoor training data. Download it with:
-
-```bash
-omnitools.download point_info rgb depth_euclidean mask_valid --components hypersim --subset fullplus --dest ./omnidata_hypersim --name your-name --email your-email --agree_all
-```
-
-After downloading, use the [script](../splits/hypersim/prepare_hypersim_split_files_in_nyu_format.py) to generate split files.
-
-The dataset is soft-linked to `datasets/hypersim`, and splits are saved [here](../splits/hypersim).
-
-### **DDAD**
-Clone the [DDAD repository](https://github.com/TRI-ML/DDAD) and export it to your `PYTHONPATH`:
-
-```bash
-cd ..
-git clone https://github.com/TRI-ML/dgp.git
-export PYTHONPATH="$PWD/dgp:$PYTHONPATH"
-```
-
-Then run the code in `../splits/ddad` to download and process the dataset. Use the splits and info files from `../splits/ddad`. To download and process splits (e.g., train or val), use the following command:
-
-```bash
-cd ./depth_any_camera
-python ./splits/ddad/get_ddad.py --base-path <BASE-PATH> --split <split-chosen>
-```
-
-The dataset is soft-linked to `datasets/ddad`, and splits and intrinsic parameters are saved [here](../splits/ddad).
-
-### **LYFT**
-The dataset can be downloaded from this [webpage](https://www.kaggle.com/c/3d-object-detection-for-autonomous-vehicles/data). After downloading, use the [script](../splits/lyft/generate_json_train.py) to prepare depth maps from the original object detection dataset for training, and another [script](../splits/lyft/generate_json_val.py) for validation. Use the [script](../splits/lyft/generate_splits.py) to generate NYU-style split files.
-
-The dataset is soft-linked to `datasets/lyft`, and splits and intrinsic parameters are saved [here](../splits/lyft). -->
-
 ---

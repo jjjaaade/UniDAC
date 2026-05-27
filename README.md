@@ -23,9 +23,10 @@
 ## News
 
 
-- [ ] Training code for UniDAC.
+
 - [ ] Demo code for images with unknown camera parameters.
-- [x] Demo code for easy setup and usage.
+- [x] `2026-05-17`:Training code for UniDAC.
+- [x] `2026-04-12`:Demo code for easy setup and usage.
 - [x] `2026-03-13`: Release of UniDAC checkpoint trained on moderately sized datasets.
 - [x] `2026-03-13`: Testing and evaluation pipeline for zero-shot metric depth estimation on perspective, fisheye, and 360-degree datasets.
 - [x] `2026-03-13`: Data preparation and curation scripts.
