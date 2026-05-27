@@ -186,12 +186,14 @@ This software is released under MIT license. You can view a license summary [her
 
 ## Citation
 
-<!-- If you find our work useful in your research please consider citing our publication:
+If you find our work useful in your research please consider citing our publication:
 ```bibtex
-@inproceedings{Guo2025DepthAnyCamera,
-  title={Depth Any Camera: Zero-Shot Metric Depth Estimation from Any Camera},
-  author={Yuliang Guo and Sparsh Garg and S. Mahdi H. Miangoleh and Xinyu Huang and Liu Ren},
-  booktitle={CVPR},
-  year={2025}
+@inproceedings{Ganesan2026UniDAC,
+  author    = {Girish Chandar Ganesan and Yuliang Guo and Liu Ren and Xiaoming Liu},
+  title     = {UniDAC: Universal Metric Depth Estimation for Any Camera},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  address   = {Denver, CO},
+  month     = {June},
+  year      = {2026}
 }
-``` -->
+```
