@@ -1,0 +1,14 @@
+{
+    "_comment": "Example intrinsics file for demo_unidac_wild.py (ScanNet++ DSLR camera).",
+    "camera_model": "OPENCV_FISHEYE",
+    "fl_x": 789.9080967683176,
+    "fl_y": 791.5566599926353,
+    "cx": 879.203786509326,
+    "cy": 584.7893145555763,
+    "k1": -0.029473047856246333,
+    "k2": -0.005769803970428537,
+    "k3": -0.002148236771485755,
+    "k4": 0.00014840568362061509,
+    "crop_wFoV": 180,
+    "fwd_sz": [512, 704]
+}
